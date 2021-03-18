@@ -1,0 +1,57 @@
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+version: "3.0"
+
+module:
+  meta:
+    type: remote
+  spec:
+    endpoints:
+      - endpoint:
+          meta:
+            kind: http
+          spec:
+            typename:
+              namespace: java.showcase.fns
+            urlPathTemplate: http://host.testcontainers.internal:1108/
+            timeouts:
+              call: 1day # setting a very high timeout here facilitates the user
+                         # to set breakpoints in the function Java code and explore
+                         # around in the IDE, without StateFun failing an ongoing invocation
+    ingresses:
+      - ingress:
+          meta:
+            type: statefun.kafka.io/routable-protobuf-ingress
+            id: java.showcase.io/user-logins
+          spec:
+            address: kafka:9092
+            consumerGroupId: java.showcase.greeter
+            startupPosition:
+              type: earliest
+            topics:
+              - topic: user-logins
+                typeUrl: java.showcase.types/org.apache.flink.statefun.playground.java.showcase.part1.types.UserLogin
+                targets:
+                  - java.showcase.fns/user
+    egresses:
+      - egress:
+          meta:
+            type: statefun.kafka.io/generic-egress
+            id: java.showcase.io/user-greetings
+          spec:
+            address: kafka:9092
+            deliverySemantic:
+              type: at-least-once
