@@ -39,3 +39,12 @@ from remote databases.
 The grand finale of this tutorial series. In this last part of the tutorial, you will serve functions via a HTTP web
 server, so that it is reachable by the StateFun runtime. This final part of the tutorial provides a runnable demo
 experience, so we highly recommend taking a look to see everything in action!
+
+## Next Steps
+
+The setup you executed in the last part of this tutorial is not how you'd normally deploy StateFun processes
+and functions. It's a rather simplified setup to allow you to explore the interaction between
+functions and the StateFun processes by setting debugger breakpoints in the function code in your IDE.
+
+We recommend now to take a look at a slightly more realistic setup, using Docker Compose, in the
+[Greeter Docker Compose Example](../greeter).
