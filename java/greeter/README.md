@@ -46,7 +46,7 @@ take a few minutes as it also needs to build the function's Java project.
 Afterward the build completes, start running all the services:
 
 ```
-$ docker-compose run
+$ docker-compose up
 ```
 
 ## Play around!
