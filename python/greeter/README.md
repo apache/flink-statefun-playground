@@ -44,7 +44,7 @@ the producer service.
 docker-compose restart producer
 ``` 
 
-Feeling curious? add the following print to the `person` function at [server.py](server.py):
+Feeling curious? add the following print to the `person` function at [functions.py](functions.py):
 ```print(f"Hello there {context.address.id}!", flush=True)```.
 
 Then, rebuild and restart only the `functions` service.
