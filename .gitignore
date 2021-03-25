@@ -1,0 +1,6 @@
+target/
+*.iml
+.idea/
+venv/*
+__pycahe__/*
+.DS_Store
