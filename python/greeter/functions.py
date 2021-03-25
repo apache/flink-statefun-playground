@@ -23,19 +23,7 @@ from aiohttp import web
 
 functions = StatefulFunctions()
 
-
-def serialize_json_utf8(obj) -> bytes:
-    """
-    serialize the given object as a JSON utf-8 bytes.
-    """
-    str = json.dumps(obj, ensure_ascii=False)
-    return str.encode('utf-8')
-
-
-GREET_REQUEST_TYPE = simple_type(typename="example/GreetRequest",
-                                 serialize_fn=serialize_json_utf8,
-                                 deserialize_fn=json.loads)
-
+GREET_REQUEST_TYPE = make_json_type(typename="example/GreetRequest")
 
 @functions.bind(typename="example/person", specs=[ValueSpec(name="visits", type=IntType)])
 async def person(context: Context, message: Message):
