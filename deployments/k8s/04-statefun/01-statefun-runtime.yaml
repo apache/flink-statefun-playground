@@ -1,0 +1,202 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: statefun
+  name: flink-config
+  labels:
+    app: statefun
+data:
+  flink-conf.yaml: |+
+    jobmanager.rpc.address: statefun-master
+    taskmanager.numberOfTaskSlots: 1
+    blob.server.port: 6124
+    jobmanager.rpc.port: 6123
+    taskmanager.rpc.port: 6122
+    classloader.parent-first-patterns.additional: org.apache.flink.statefun;org.apache.kafka;com.google.protobuf
+    state.backend: rocksdb
+    state.backend.rocksdb.timer-service.factory: ROCKSDB
+    state.backend.incremental: true
+    parallelism.default: 1 
+    s3.access-key: minioadmin
+    s3.secret-key: minioadmin
+    state.checkpoints.dir: s3://checkpoints/subscriptions
+    s3.endpoint: http://minio.statefun.svc.cluster.local:9000
+    s3.path-style-access: true
+    jobmanager.memory.process.size: 1g 
+    taskmanager.memory.process.size: 1g
+    
+  log4j-console.properties: |+
+          monitorInterval=30
+          rootLogger.level = INFO
+          rootLogger.appenderRef.console.ref = ConsoleAppender
+          logger.akka.name = akka
+          logger.akka.level = INFO
+          logger.kafka.name= org.apache.kafka
+          logger.kafka.level = INFO
+          logger.hadoop.name = org.apache.hadoop
+          logger.hadoop.level = INFO
+          logger.zookeeper.name = org.apache.zookeeper
+          logger.zookeeper.level = INFO
+          appender.console.name = ConsoleAppender
+          appender.console.type = CONSOLE
+          appender.console.layout.type = PatternLayout
+          appender.console.layout.pattern = %d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %-60c %x - %m%n
+          logger.netty.name = org.apache.flink.shaded.akka.org.jboss.netty.channel.DefaultChannelPipeline
+          logger.netty.level = OFF 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: statefun-master-rest
+  namespace: statefun
+spec:
+  type: NodePort
+  ports:
+    - name: rest
+      port: 8081
+      targetPort: 8081
+  selector:
+    app: statefun
+    component: master
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: statefun-master
+  namespace: statefun
+spec:
+  type: ClusterIP
+  ports:
+    - name: rpc
+      port: 6123
+    - name: blob
+      port: 6124
+    - name: ui
+      port: 8081
+  selector:
+    app: statefun
+    component: master
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: statefun-master
+  namespace: statefun
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: statefun
+      component: master
+  template:
+    metadata:
+      labels:
+        app: statefun
+        component: master
+    spec:
+      containers:
+        - name: master
+          image: apache/flink-statefun:3.0.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ROLE
+              value: master
+            - name: MASTER_HOST
+              value: statefun-master
+          ports:
+            - containerPort: 6123
+              name: rpc
+            - containerPort: 6124
+              name: blob
+            - containerPort: 8081
+              name: ui
+          livenessProbe:
+            tcpSocket:
+              port: 6123
+            initialDelaySeconds: 30
+            periodSeconds: 60
+          volumeMounts:
+            - name: flink-config-volume
+              mountPath: /opt/flink/conf
+            - name: module-config-volume
+              mountPath: /opt/statefun/modules/example
+      volumes:
+        - name: flink-config-volume
+          configMap:
+            name: flink-config
+            items:
+              - key: flink-conf.yaml
+                path: flink-conf.yaml
+              - key: log4j-console.properties
+                path: log4j-console.properties
+        - name: module-config-volume
+          configMap:
+            name: module-config
+            items:
+              - key: module.yaml
+                path: module.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: statefun-worker
+  namespace: statefun
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: statefun
+      component: worker
+  template:
+    metadata:
+      labels:
+        app: statefun
+        component: worker
+    spec:
+      containers:
+        - name: worker
+          image: apache/flink-statefun:3.0.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ROLE
+              value: worker
+            - name: MASTER_HOST
+              value: statefun-master 
+          resources:
+            requests:
+              memory: "1Gi"
+          ports:
+            - containerPort: 6122
+              name: rpc
+            - containerPort: 6124
+              name: blob
+            - containerPort: 8081
+              name: ui
+          livenessProbe:
+            tcpSocket:
+              port: 6122
+            initialDelaySeconds: 30
+            periodSeconds: 60
+          volumeMounts:
+            - name: flink-config-volume
+              mountPath: /opt/flink/conf
+            - name: module-config-volume
+              mountPath: /opt/statefun/modules/example
+      volumes:
+        - name: flink-config-volume
+          configMap:
+            name: flink-config
+            items:
+              - key: flink-conf.yaml
+                path: flink-conf.yaml
+              - key: log4j-console.properties
+                path: log4j-console.properties
+        - name: module-config-volume
+          configMap:
+            name: module-config
+            items:
+              - key: module.yaml
+                path: module.yaml
+

@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: statefun
+  name: module-config
+data:
+  module.yaml: |+
+    version: "3.0"
+    module:
+      meta:
+        type: remote
+      spec:
+        endpoints:
+          - endpoint:
+              meta:
+                kind: http
+              spec:
+                functions: example/*
+                urlPathTemplate: http://functions.statefun.svc.cluster.local:8000/statefun
+                timeouts:
+                  call: 2min
+        ingresses:
+          - ingress:
+              meta:
+                type: io.statefun.kafka/ingress
+                id: example/in
+              spec:
+                address: kafka.statefun.svc.cluster.local:9092
+                consumerGroupId: my-group-id
+                topics:
+                  - topic: names
+                    valueType: example/MyMessage
+                    targets:
+                      - example/hello
+

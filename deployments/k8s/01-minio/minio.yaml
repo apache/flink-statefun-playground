@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio
+  namespace: statefun
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: statefun
+      component: minio
+  template:
+    metadata:
+      labels:
+        app: statefun
+        component: minio 
+      namespace: statefun
+    spec:
+      containers:
+        - name: minio
+          image: minio/minio
+          command: ["minio"]
+          args: ["server", "/data"]
+          ports:
+            - containerPort: 9000
+              name: endpoint
+          livenessProbe:
+            tcpSocket:
+              port: 9000
+            initialDelaySeconds: 30
+            periodSeconds: 60
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio 
+  namespace: statefun
+spec:
+  type: ClusterIP
+  ports:
+    - name: endpoint
+      port: 9000
+  selector:
+    app: statefun
+    component: minio
+
