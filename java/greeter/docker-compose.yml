@@ -35,7 +35,7 @@ services:
   ###############################################################
 
   statefun-manager:
-    image: flink-statefun:2.3-SNAPSHOT
+    image: flink-statefun:3.0-SNAPSHOT
     expose:
       - "6123"
     ports:
@@ -47,7 +47,7 @@ services:
       - ./module.yaml:/opt/statefun/modules/greeter/module.yaml
 
   statefun-worker:
-    image: flink-statefun:2.3-SNAPSHOT
+    image: flink-statefun:3.0-SNAPSHOT
     expose:
       - "6121"
       - "6122"

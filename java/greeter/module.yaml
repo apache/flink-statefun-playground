@@ -24,13 +24,12 @@ module:
           meta:
             kind: http
           spec:
-            typename:
-              namespace: greeter.fns
+            functions: greeter.fns/*
             urlPathTemplate: http://greeter-functions:1108/
     ingresses:
       - ingress:
           meta:
-            type: statefun.kafka.io/routable-protobuf-ingress
+            type: io.statefun.kafka/ingress
             id: greeter.io/user-logins
           spec:
             address: kafka:9092
@@ -39,13 +38,13 @@ module:
               type: earliest
             topics:
               - topic: user-logins
-                typeUrl: greeter.types/org.apache.flink.statefun.playground.java.greeter.types.UserLogin
+                valueType: greeter.types/org.apache.flink.statefun.playground.java.greeter.types.UserLogin
                 targets:
                   - greeter.fns/user
     egresses:
       - egress:
           meta:
-            type: statefun.kafka.io/generic-egress
+            type: io.statefun.kafka/egress
             id: greeter.io/user-greetings
           spec:
             address: kafka:9092

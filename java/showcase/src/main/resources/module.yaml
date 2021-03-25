@@ -24,8 +24,7 @@ module:
           meta:
             kind: http
           spec:
-            typename:
-              namespace: java.showcase.fns
+            functions: java.showcase.fns/*
             urlPathTemplate: http://host.testcontainers.internal:1108/
             timeouts:
               call: 1day # setting a very high timeout here facilitates the user
@@ -34,7 +33,7 @@ module:
     ingresses:
       - ingress:
           meta:
-            type: statefun.kafka.io/routable-protobuf-ingress
+            type: io.statefun.kafka/ingress
             id: java.showcase.io/user-logins
           spec:
             address: kafka:9092
@@ -43,13 +42,13 @@ module:
               type: earliest
             topics:
               - topic: user-logins
-                typeUrl: java.showcase.types/org.apache.flink.statefun.playground.java.showcase.part1.types.UserLogin
+                valueType: java.showcase.types/org.apache.flink.statefun.playground.java.showcase.part1.types.UserLogin
                 targets:
                   - java.showcase.fns/user
     egresses:
       - egress:
           meta:
-            type: statefun.kafka.io/generic-egress
+            type: io.statefun.kafka/egress
             id: java.showcase.io/user-greetings
           spec:
             address: kafka:9092

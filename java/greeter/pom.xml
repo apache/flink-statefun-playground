@@ -26,7 +26,7 @@ under the License.
     <packaging>jar</packaging>
 
     <properties>
-        <statefun.version>2.3-SNAPSHOT</statefun.version>
+        <statefun.version>3.0-SNAPSHOT</statefun.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>

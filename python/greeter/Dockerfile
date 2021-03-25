@@ -27,8 +27,8 @@ COPY functions.py /app
 EXPOSE 8000
 
 # TODO: remove the following 2 lines, once apache_filink_statefun-3.0.0 will be released.
-ADD lib-dev/apache_flink_statefun-2.3_SNAPSHOT-py3-none-any.whl /app 
-RUN pip3 install /app/apache_flink_statefun-2.3_SNAPSHOT-py3-none-any.whl 
+ADD lib-dev/apache_flink_statefun-3.0_SNAPSHOT-py3-none-any.whl /app 
+RUN pip3 install /app/apache_flink_statefun-3.0_SNAPSHOT-py3-none-any.whl 
 
 CMD ["python3", "/app/functions.py"]
 

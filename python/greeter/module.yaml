@@ -22,28 +22,27 @@ module:
           meta:
             kind: http
           spec:
-            typename:
-              namespace: example
+            functions: example/*
             urlPathTemplate: http://functions:8000/statefun
             timeouts:
               call: 2min
     ingresses:
       - ingress:
           meta:
-            type: statefun.kafka.io/routable-protobuf-ingress
+            type: io.statefun.kafka/ingress
             id: example/names
           spec:
             address: kafka:9092
             consumerGroupId: my-group-id
             topics:
               - topic: names
-                typeUrl: example/GreetRequest
+                valueType: example/GreetRequest
                 targets:
                   - example/person
     egresses:
       - egress:
           meta:
-            type: statefun.kafka.io/generic-egress
+            type: io.statefun.kafka/egress
             id: example/greets
           spec:
             address: kafka:9092

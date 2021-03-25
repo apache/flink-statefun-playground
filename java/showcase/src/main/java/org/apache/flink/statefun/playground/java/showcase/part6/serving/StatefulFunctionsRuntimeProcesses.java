@@ -86,7 +86,7 @@ public final class StatefulFunctionsRuntimeProcesses {
   }
 
   private static GenericContainer<?> managerContainer(Network network) {
-    return new GenericContainer<>(DockerImageName.parse("flink-statefun:2.3-SNAPSHOT"))
+    return new GenericContainer<>(DockerImageName.parse("flink-statefun:3.0-SNAPSHOT"))
         .withNetwork(network)
         .withNetworkAliases("statefun-manager")
         .withEnv("ROLE", "master")
@@ -98,7 +98,7 @@ public final class StatefulFunctionsRuntimeProcesses {
   }
 
   private static GenericContainer<?> workerContainer(Network network) {
-    return new GenericContainer<>(DockerImageName.parse("flink-statefun:2.3-SNAPSHOT"))
+    return new GenericContainer<>(DockerImageName.parse("flink-statefun:3.0-SNAPSHOT"))
         .withNetwork(network)
         .withNetworkAliases("statefun-worker")
         .withEnv("ROLE", "worker")
