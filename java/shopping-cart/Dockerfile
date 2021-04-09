@@ -15,15 +15,6 @@
 
 # Build the functions code ...
 FROM maven:3.6.3-jdk-11 AS builder
-# TODO remove these commented lines and the jar; this is needed now only because we don't have the latest Java SDK published to Maven central yet
-COPY statefun-sdk-java-3.0-SNAPSHOT.jar /usr/src/app/
-RUN mvn install:install-file \
- -Dfile=/usr/src/app/statefun-sdk-java-3.0-SNAPSHOT.jar \
- -DgroupId=org.apache.flink \
- -DartifactId=statefun-sdk-java \
- -Dversion=3.0-SNAPSHOT \
- -Dpackaging=jar \
- -DgeneratePom=true
 COPY pom.xml /usr/src/app/
 # Build dependencies and cache this layer
 RUN mvn -f /usr/src/app dependency:go-offline package -B
