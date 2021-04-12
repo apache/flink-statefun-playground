@@ -13,3 +13,11 @@ This repository contains tutorials and examples for [Stateful Functions](https:/
   ```
 
 Afterwards, consult the `README` under the version branch to proceed with learning the tutorials and examples.
+
+## Code of Conduct
+
+Apache Flink, Stateful Functions, and all its associated repositories follow the [Code of Conduct of the Apache Software Foundation](https://www.apache.org/foundation/policies/conduct).
+
+## License
+
+The code in this repository is licensed under the [Apache Software License 2.0](LICENSE).
