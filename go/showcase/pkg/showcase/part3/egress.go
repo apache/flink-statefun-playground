@@ -42,7 +42,7 @@ func EgressFn(ctx statefun.Context, _ statefun.Message) error {
 	ctx.SendEgress(statefun.KinesisEgressBuilder{
 		Target:          KinesisEgressTypeName,
 		Stream:          "my-kinesis-stream",
-		Value:           "hello world again!",
+		Value:           []byte("hello world again!"),
 		PartitionKey:    "my-partition-key",
 		ExplicitHashKey: "my-explicit-hash-key",
 	})

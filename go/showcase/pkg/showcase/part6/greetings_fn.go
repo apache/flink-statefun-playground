@@ -45,7 +45,7 @@ func greetings(ctx statefun.Context, message statefun.Message) error {
 		Target: KafkaEgress,
 		Topic:  "greetings",
 		Key:    ctx.Self().Id,
-		Value:  greeting,
+		Value:  []byte(greeting),
 	})
 
 	return nil
