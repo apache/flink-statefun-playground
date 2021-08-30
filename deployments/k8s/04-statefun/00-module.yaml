@@ -13,7 +13,7 @@ data:
         timeouts:
           call: 2min
     ---
-    kind: io.statefun.kafka.v2/ingress
+    kind: io.statefun.kafka.v1/ingress
     spec:
       id: example/in
       address: kafka.statefun.svc.cluster.local:9092

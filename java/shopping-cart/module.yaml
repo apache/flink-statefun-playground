@@ -51,7 +51,7 @@ spec:
       targets:
         - com.example/user-shopping-cart
 ---
-kind: io.statefun.kafka/ingress
+kind: io.statefun.kafka.v1/ingress
 spec:
   id: com.example/restock-items
   address: kafka:9092
