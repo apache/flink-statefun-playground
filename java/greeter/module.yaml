@@ -13,40 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-version: "3.0"
-
-module:
-  meta:
-    type: remote
-  spec:
-    endpoints:
-      - endpoint:
-          meta:
-            kind: http
-          spec:
-            functions: greeter.fns/*
-            urlPathTemplate: http://greeter-functions:1108/
-    ingresses:
-      - ingress:
-          meta:
-            type: io.statefun.kafka/ingress
-            id: greeter.io/user-logins
-          spec:
-            address: kafka:9092
-            consumerGroupId: greeter
-            startupPosition:
-              type: earliest
-            topics:
-              - topic: user-logins
-                valueType: greeter.types/org.apache.flink.statefun.playground.java.greeter.types.UserLogin
-                targets:
-                  - greeter.fns/user
-    egresses:
-      - egress:
-          meta:
-            type: io.statefun.kafka/egress
-            id: greeter.io/user-greetings
-          spec:
-            address: kafka:9092
-            deliverySemantic:
-              type: at-least-once
+kind: io.statefun.endpoints.v2/http
+spec:
+  functions: greeter.fns/*
+  urlPathTemplate: http://greeter-functions:1108/
+---
+kind: io.statefun.kafka.v1/ingress
+spec:
+  id: greeter.io/user-logins
+  address: kafka:9092
+  consumerGroupId: greeter
+  startupPosition:
+    type: earliest
+  topics:
+    - topic: user-logins
+      valueType: greeter.types/org.apache.flink.statefun.playground.java.greeter.types.UserLogin
+      targets:
+        - greeter.fns/user
+---
+kind: io.statefun.kafka.v1/egress
+spec:
+  id: greeter.io/user-greetings
+  address: kafka:9092
+  deliverySemantic:
+    type: at-least-once
+---
