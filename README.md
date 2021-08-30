@@ -6,9 +6,9 @@ This repository contains tutorials and examples for [Stateful Functions](https:/
 
 **All tutorials and examples are located in release branches on this repository**. Click on one of the versions below to navigate to the corresponding version branch, or simply copy-paste the git commands to locally clone the branch:
 
-- [`StateFun 3.0 series`](https://github.com/apache/flink-statefun-playground/tree/release-3.0), or:
+- [`StateFun 3.1 series`](https://github.com/apache/flink-statefun-playground/tree/release-3.1), or:
   ```
-  $ git clone -b release-3.0 https://github.com/apache/flink-statefun-playground.git
+  $ git clone -b release-3.1 https://github.com/apache/flink-statefun-playground.git
   $ cd flink-statefun-playground
   ```
 
