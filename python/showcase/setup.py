@@ -27,7 +27,7 @@ with io.open(os.path.join(this_directory, 'README.md'), 'r', encoding='utf-8') a
 
 setup(
     name='showcase',
-    version='3.0.0',
+    version='3.1.0',
     packages=["showcase"],
     url='https://github.com/apache/flink-statefun-playground',
     license='https://www.apache.org/licenses/LICENSE-2.0',
@@ -38,7 +38,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     install_requires=['protobuf>=3.11.3,<4.0.0',
-                      'apache-flink-statefun==3.0.0',
+                      'apache-flink-statefun==3.1.0',
                       'aiohttp'],
     tests_require=['pytest'],
     python_requires='>=3.8',

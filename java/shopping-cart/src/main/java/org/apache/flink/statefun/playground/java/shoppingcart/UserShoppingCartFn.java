@@ -27,7 +27,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
-
 import org.apache.flink.statefun.sdk.java.Address;
 import org.apache.flink.statefun.sdk.java.AddressScopedStorage;
 import org.apache.flink.statefun.sdk.java.Context;
@@ -80,7 +79,7 @@ final class UserShoppingCartFn implements StatefulFunction {
         // ItemAvailability event comes from the Stock function and contains the itemId as the
         // caller id
         final Optional<Address> caller = context.caller();
-        if(caller.isPresent()){
+        if (caller.isPresent()) {
           basket.add(caller.get().id(), availability.getQuantity());
         } else {
           throw new IllegalStateException("There should always be a caller in this example");
@@ -107,7 +106,8 @@ final class UserShoppingCartFn implements StatefulFunction {
           .ifPresent(
               basket -> {
                 for (Map.Entry<String, Integer> entry : basket.getEntries()) {
-                  Messages.RestockItem restockItem = new Messages.RestockItem(entry.getKey(), entry.getValue());
+                  Messages.RestockItem restockItem =
+                      new Messages.RestockItem(entry.getKey(), entry.getValue());
                   Message restockCommand =
                       MessageBuilder.forAddress(StockFn.TYPE, entry.getKey())
                           .withCustomType(Messages.RESTOCK_ITEM_TYPE, restockItem)
@@ -145,7 +145,8 @@ final class UserShoppingCartFn implements StatefulFunction {
             LOG.info("{}", items);
 
             final Messages.Receipt receipt = new Messages.Receipt(context.self().id(), items);
-            final EgressMessage egressMessage = KafkaEgressMessage.forEgress(Identifiers.RECEIPT_EGRESS)
+            final EgressMessage egressMessage =
+                KafkaEgressMessage.forEgress(Identifiers.RECEIPT_EGRESS)
                     .withTopic(Identifiers.RECEIPT_TOPICS)
                     .withUtf8Key(context.self().id())
                     .withValue(Messages.RECEIPT_TYPE, receipt)
@@ -198,7 +199,7 @@ final class UserShoppingCartFn implements StatefulFunction {
     }
 
     @JsonProperty("basket")
-    public Map<String, Integer> getBasketContent(){
+    public Map<String, Integer> getBasketContent() {
       return basket;
     };
 

@@ -22,11 +22,11 @@ under the License.
 
     <groupId>org.apache.flink</groupId>
     <artifactId>statefun-java-showcase</artifactId>
-    <version>3.0.0</version>
+    <version>3.1.0</version>
     <packaging>jar</packaging>
 
     <properties>
-        <statefun.version>3.0.0</statefun.version>
+        <statefun.version>3.1.0</statefun.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>

@@ -21,7 +21,6 @@ package org.apache.flink.statefun.playground.java.shoppingcart;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.apache.flink.statefun.sdk.java.TypeName;
 import org.apache.flink.statefun.sdk.java.types.SimpleType;
 import org.apache.flink.statefun.sdk.java.types.Type;
@@ -29,7 +28,6 @@ import org.apache.flink.statefun.sdk.java.types.Type;
 public class Messages {
 
   private static final ObjectMapper mapper = new ObjectMapper();
-
 
   /* ingress -> user-shopping-cart */
   public static final Type<AddToCart> ADD_TO_CART =
@@ -62,10 +60,10 @@ public class Messages {
   /* ingress -> stock */
   /* user-shopping-cart -> stock */
   public static final Type<RestockItem> RESTOCK_ITEM_TYPE =
-          SimpleType.simpleImmutableTypeFrom(
-                  TypeName.typeNameFromString("com.example/RestockItem"),
-                  mapper::writeValueAsBytes,
-                  bytes -> mapper.readValue(bytes, RestockItem.class));
+      SimpleType.simpleImmutableTypeFrom(
+          TypeName.typeNameFromString("com.example/RestockItem"),
+          mapper::writeValueAsBytes,
+          bytes -> mapper.readValue(bytes, RestockItem.class));
 
   public static class ClearCart {
     private final String userId;
@@ -74,23 +72,21 @@ public class Messages {
     public ClearCart(@JsonProperty("userId") String userId) {
       this.userId = userId;
     }
-/*        Messages.AddToCart add = new Messages.AddToCart("1", "2", 3);
-        String addJson = mapper.writeValueAsString(add);
-        System.out.println(addJson);
+    /*        Messages.AddToCart add = new Messages.AddToCart("1", "2", 3);
+    String addJson = mapper.writeValueAsString(add);
+    System.out.println(addJson);
 
-        String json = "{\"userId\":1, \"quantity\":3, \"itemId\":2}";
+    String json = "{\"userId\":1, \"quantity\":3, \"itemId\":2}";
 
-        Messages.AddToCart addReceived = mapper.readValue(json.getBytes(), Messages.AddToCart.class);
-        System.out.println(addReceived);*/
+    Messages.AddToCart addReceived = mapper.readValue(json.getBytes(), Messages.AddToCart.class);
+    System.out.println(addReceived);*/
     public String getUserId() {
       return userId;
     }
 
     @Override
     public String toString() {
-      return "ClearCart{" +
-              "userId='" + userId + '\'' +
-              '}';
+      return "ClearCart{" + "userId='" + userId + '\'' + '}';
     }
   }
 
@@ -108,9 +104,7 @@ public class Messages {
 
     @Override
     public String toString() {
-      return "Checkout{" +
-              "userId='" + userId + '\'' +
-              '}';
+      return "Checkout{" + "userId='" + userId + '\'' + '}';
     }
   }
 
@@ -134,10 +128,7 @@ public class Messages {
 
     @Override
     public String toString() {
-      return "Receipt{" +
-              "userId='" + userId + '\'' +
-              ", details='" + details + '\'' +
-              '}';
+      return "Receipt{" + "userId='" + userId + '\'' + ", details='" + details + '\'' + '}';
     }
   }
 
@@ -146,7 +137,8 @@ public class Messages {
     private final int quantity;
 
     @JsonCreator
-    public RestockItem(@JsonProperty("itemId") String itemId, @JsonProperty("quantity") int quantity) {
+    public RestockItem(
+        @JsonProperty("itemId") String itemId, @JsonProperty("quantity") int quantity) {
       this.itemId = itemId;
       this.quantity = quantity;
     }
@@ -161,10 +153,7 @@ public class Messages {
 
     @Override
     public String toString() {
-      return "RestockItem{" +
-              "itemId='" + itemId + '\'' +
-              ", quantity=" + quantity +
-              '}';
+      return "RestockItem{" + "itemId='" + itemId + '\'' + ", quantity=" + quantity + '}';
     }
   }
 
@@ -175,7 +164,9 @@ public class Messages {
 
     @JsonCreator
     public AddToCart(
-            @JsonProperty("userId") String userId, @JsonProperty("itemId") String itemId, @JsonProperty("quantity") int quantity) {
+        @JsonProperty("userId") String userId,
+        @JsonProperty("itemId") String itemId,
+        @JsonProperty("quantity") int quantity) {
       this.userId = userId;
       this.itemId = itemId;
       this.quantity = quantity;
@@ -195,11 +186,16 @@ public class Messages {
 
     @Override
     public String toString() {
-      return "AddToCart{" +
-              "userId='" + userId + '\'' +
-              ", itemId='" + itemId + '\'' +
-              ", quantity=" + quantity +
-              '}';
+      return "AddToCart{"
+          + "userId='"
+          + userId
+          + '\''
+          + ", itemId='"
+          + itemId
+          + '\''
+          + ", quantity="
+          + quantity
+          + '}';
     }
   }
 
@@ -207,20 +203,19 @@ public class Messages {
   // Internal messages
   // ---------------------------------------------------------------------
 
-
   /* user-shopping-cart -> stock */
   public static final Type<RequestItem> REQUEST_ITEM_TYPE =
-          SimpleType.simpleImmutableTypeFrom(
-                  TypeName.typeNameFromString("com.example/RequestItem"),
-                  mapper::writeValueAsBytes,
-                  bytes -> mapper.readValue(bytes, RequestItem.class));
+      SimpleType.simpleImmutableTypeFrom(
+          TypeName.typeNameFromString("com.example/RequestItem"),
+          mapper::writeValueAsBytes,
+          bytes -> mapper.readValue(bytes, RequestItem.class));
 
   /* stock -> user-shopping-cart */
   public static final Type<ItemAvailability> ITEM_AVAILABILITY_TYPE =
-          SimpleType.simpleImmutableTypeFrom(
-                  TypeName.typeNameFromString("com.example/ItemAvailability"),
-                  mapper::writeValueAsBytes,
-                  bytes -> mapper.readValue(bytes, ItemAvailability.class));
+      SimpleType.simpleImmutableTypeFrom(
+          TypeName.typeNameFromString("com.example/ItemAvailability"),
+          mapper::writeValueAsBytes,
+          bytes -> mapper.readValue(bytes, ItemAvailability.class));
 
   public static class RequestItem {
     private final int quantity;
@@ -251,7 +246,8 @@ public class Messages {
     private final int quantity;
 
     @JsonCreator
-    public ItemAvailability(@JsonProperty("status") Status status, @JsonProperty("quantity")int quantity) {
+    public ItemAvailability(
+        @JsonProperty("status") Status status, @JsonProperty("quantity") int quantity) {
       this.status = status;
       this.quantity = quantity;
     }

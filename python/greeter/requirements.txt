@@ -15,4 +15,4 @@
 # limitations under the License.
 
 aiohttp
-apache-flink-statefun==3.0.0
+apache-flink-statefun==3.1.0

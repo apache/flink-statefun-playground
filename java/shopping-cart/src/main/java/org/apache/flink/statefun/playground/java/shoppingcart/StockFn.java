@@ -22,7 +22,6 @@ import static org.apache.flink.statefun.playground.java.shoppingcart.Messages.It
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-
 import org.apache.flink.statefun.sdk.java.Address;
 import org.apache.flink.statefun.sdk.java.AddressScopedStorage;
 import org.apache.flink.statefun.sdk.java.Context;
@@ -31,7 +30,6 @@ import org.apache.flink.statefun.sdk.java.TypeName;
 import org.apache.flink.statefun.sdk.java.ValueSpec;
 import org.apache.flink.statefun.sdk.java.message.Message;
 import org.apache.flink.statefun.sdk.java.message.MessageBuilder;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,8 +74,9 @@ final class StockFn implements StatefulFunction {
       }
 
       final Optional<Address> caller = context.caller();
-      if(caller.isPresent()){
-        context.send( MessageBuilder.forAddress(caller.get())
+      if (caller.isPresent()) {
+        context.send(
+            MessageBuilder.forAddress(caller.get())
                 .withCustomType(ITEM_AVAILABILITY_TYPE, itemAvailability)
                 .build());
       } else {
