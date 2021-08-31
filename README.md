@@ -11,6 +11,11 @@ This repository contains tutorials and examples for [Stateful Functions](https:/
   $ git clone -b release-3.1 https://github.com/apache/flink-statefun-playground.git
   $ cd flink-statefun-playground
   ```
+- [`StateFun 3.0 series`](https://github.com/apache/flink-statefun-playground/tree/release-3.0), or:
+  ```
+  $ git clone -b release-3.0 https://github.com/apache/flink-statefun-playground.git
+  $ cd flink-statefun-playground
+  ```
 
 Afterwards, consult the `README` under the version branch to proceed with learning the tutorials and examples.
 
