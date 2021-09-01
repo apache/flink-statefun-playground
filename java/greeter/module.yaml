@@ -37,4 +37,3 @@ spec:
   address: kafka:9092
   deliverySemantic:
     type: at-least-once
----
