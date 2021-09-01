@@ -69,4 +69,3 @@ spec:
   deliverySemantic:
     type: exactly-once
     transactionTimeoutMillis: 100000
----

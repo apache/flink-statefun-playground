@@ -23,5 +23,4 @@ data:
             valueType: example/MyMessage
             targets:
               - example/hello
-    ---
 
