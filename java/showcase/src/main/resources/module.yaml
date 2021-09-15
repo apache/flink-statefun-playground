@@ -18,10 +18,10 @@ spec:
   functions: java.showcase.fns/*
   urlPathTemplate: http://host.testcontainers.internal:1108/
   transport:
-    timeouts:
-      call: 1day # setting a very high timeout here facilitates the user
-                 # to set breakpoints in the function Java code and explore
-                 # around in the IDE, without StateFun failing an ongoing invocation
+    type: io.statefun.transports.v1/async
+    call: 1day # setting a very high timeout here facilitates the user
+               # to set breakpoints in the function Java code and explore
+               # around in the IDE, without StateFun failing an ongoing invocation
 ---
 kind: io.statefun.kafka.v1/ingress
 spec:

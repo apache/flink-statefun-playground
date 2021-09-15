@@ -17,6 +17,8 @@ kind: io.statefun.endpoints.v2/http
 spec:
   functions: com.example/*
   urlPathTemplate: http://shopping-cart-functions:1108/
+  transport:
+    type: io.statefun.transports.v1/async
 ---
 kind: io.statefun.kafka.v1/ingress
 spec:
@@ -68,4 +70,4 @@ spec:
   address: kafka:9092
   deliverySemantic:
     type: exactly-once
-    transactionTimeoutMillis: 100000
+    transactionTimeout: 15min

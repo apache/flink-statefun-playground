@@ -17,6 +17,8 @@ kind: io.statefun.endpoints.v2/http
 spec:
   functions: greeter.fns/*
   urlPathTemplate: http://greeter-functions:1108/
+  transport:
+    type: io.statefun.transports.v1/async
 ---
 kind: io.statefun.kafka.v1/ingress
 spec:
