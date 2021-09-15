@@ -18,8 +18,7 @@ spec:
   functions: showcase/*
   urlPathTemplate: http://host-machine:8000/statefun
   transport:
-    timeouts:
-      call: 2min
+    type: io.statefun.transports.v1/async
 ---
 kind: io.statefun.kafka.v1/ingress
 spec:
@@ -38,4 +37,4 @@ spec:
   address: kafka:9092
   deliverySemantic:
     type: exactly-once
-    transactionTimeoutMillis: 100000
+    transactionTimeout: 15min

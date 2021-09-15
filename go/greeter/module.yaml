@@ -16,7 +16,8 @@ kind: io.statefun.endpoints.v2/http
 spec:
   functions: example/*
   urlPathTemplate: http://functions:8000/statefun
-  maxNumBatchRequests: 10000
+  transport:  
+    type: io.statefun.transports.v1/async
 ---
 kind: io.statefun.kafka.v1/ingress
 spec:
