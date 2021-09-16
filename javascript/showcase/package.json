@@ -10,6 +10,6 @@
     "start": "node showcase/showcase.js"
   },
   "dependencies": {
-    "apache-flink-statefun": "3.2-SNAPSHOT"
+    "apache-flink-statefun": "file:apache-flink-statefun-3.2-SNAPSHOT.tgz"
   }
 }
