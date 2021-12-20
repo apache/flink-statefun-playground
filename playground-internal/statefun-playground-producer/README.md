@@ -1,4 +1,4 @@
-# Kafak Producer
+# Kafka Producer
 
 # What
 This is a simple, single threaded `Python` script that produces JSONs into a `Kafka` topic.
