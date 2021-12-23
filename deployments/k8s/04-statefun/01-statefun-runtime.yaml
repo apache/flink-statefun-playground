@@ -98,7 +98,7 @@ spec:
     spec:
       containers:
         - name: master
-          image: apache/flink-statefun:3.1.0
+          image: apache/flink-statefun:3.1.1
           imagePullPolicy: IfNotPresent
           env:
             - name: ROLE
@@ -157,7 +157,7 @@ spec:
     spec:
       containers:
         - name: worker
-          image: apache/flink-statefun:3.1.0
+          image: apache/flink-statefun:3.1.1
           imagePullPolicy: IfNotPresent
           env:
             - name: ROLE
