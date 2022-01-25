@@ -5,7 +5,7 @@ metadata:
   name: module-config
 data:
   module.yaml: |+
-    kind: io.statefun.endpoints.v2.http
+    kind: io.statefun.endpoints.v2/http
     spec:
       functions: example/*
       urlPathTemplate: http://functions.statefun.svc.cluster.local:8000/statefun
@@ -18,9 +18,9 @@ data:
       id: example/in
       address: kafka.statefun.svc.cluster.local:9092
       consumerGroupId: my-group-id
-        topics:
-          - topic: names
-            valueType: example/MyMessage
-            targets:
-              - example/hello
+      topics:
+        - topic: names
+          valueType: example/MyMessage
+          targets:
+            - example/hello
 
