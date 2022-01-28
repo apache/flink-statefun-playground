@@ -9,9 +9,9 @@ If you are new to stateful functions, we recommend you to first look at a more s
 - `src/`, `pom.xml` and `Dockerfile`: These files and directories are the contents of a Java Maven project which builds
   our functions service, hosting the `UserShoppingCartFn` and `StockFn` behind a HTTP endpoint. Check out the source code under
   `src/main/java`. The `Dockerfile` is used to build a Docker image for our functions service.
-- `module.yaml`: The [Module Specification](https://ci.apache.org/projects/flink/flink-statefun-docs-release-3.0/docs/deployment/module/) file to be mounted to the StateFun runtime process containers. This
+- `module.yaml`: The [Module Specification](https://ci.apache.org/projects/flink/flink-statefun-docs-release-3.2/docs/deployment/module/) file to be mounted to the StateFun runtime process containers. This
   configures a few things for a StateFun application, such as the service endpoints of the application's functions, as
-  well as definitions of [Ingresses and Egresses](https://ci.apache.org/projects/flink/flink-statefun-docs-release-3.0/docs/io-module/overview/) which the application will use.
+  well as definitions of [Ingresses and Egresses](https://ci.apache.org/projects/flink/flink-statefun-docs-release-3.2/docs/io-module/overview/) which the application will use.
 - `docker-compose.yml`: Docker Compose file to spin up everything.
 - `playthrough`: utilities for automatically playing through the interactions scenarios.
 
@@ -59,7 +59,7 @@ It will send a series of messages, results of which you can observe in the logs 
 ```
 docker-compose logs -f shopping-cart-functions
 ```
-Note: `Caller: Optional.empty` in the logs corresponds to the messages that came via an ingress rather than from another stateful function. 
+Note: `Caller: Optional.empty` in the logs corresponds to the messages that came via an ingress rather than from another stateful function.
 
 To see the results produced to the egress:
 ```
@@ -71,6 +71,3 @@ If you want to modify the code, you can do a hot redeploy of your functions serv
 docker-compose up -d --build shopping-cart-functions
 ```
 This rebuilds the functions service image with the updated code, and restarts the service with the new image.
-
-
-
