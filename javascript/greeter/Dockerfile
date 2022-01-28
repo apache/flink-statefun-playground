@@ -18,9 +18,8 @@ FROM node:16
 
 WORKDIR /usr/src/app
 
-COPY apache-flink-statefun-3.2-SNAPSHOT.tgz ./
 COPY package.json ./
-RUN npm install -s apache-flink-statefun-3.2-SNAPSHOT.tgz 
+RUN npm install apache-flink-statefun@3.2.0
 
 COPY functions.js ./
 

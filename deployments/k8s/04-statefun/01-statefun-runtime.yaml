@@ -17,15 +17,15 @@ data:
     state.backend: rocksdb
     state.backend.rocksdb.timer-service.factory: ROCKSDB
     state.backend.incremental: true
-    parallelism.default: 1 
+    parallelism.default: 1
     s3.access-key: minioadmin
     s3.secret-key: minioadmin
     state.checkpoints.dir: s3://checkpoints/subscriptions
     s3.endpoint: http://minio.statefun.svc.cluster.local:9000
     s3.path-style-access: true
-    jobmanager.memory.process.size: 1g 
+    jobmanager.memory.process.size: 1g
     taskmanager.memory.process.size: 1g
-    
+
   log4j-console.properties: |+
           monitorInterval=30
           rootLogger.level = INFO
@@ -43,7 +43,7 @@ data:
           appender.console.layout.type = PatternLayout
           appender.console.layout.pattern = %d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %-60c %x - %m%n
           logger.netty.name = org.apache.flink.shaded.akka.org.jboss.netty.channel.DefaultChannelPipeline
-          logger.netty.level = OFF 
+          logger.netty.level = OFF
 
 ---
 apiVersion: v1
@@ -98,7 +98,7 @@ spec:
     spec:
       containers:
         - name: master
-          image: apache/flink-statefun:3.1.0
+          image: apache/flink-statefun:3.2.0
           imagePullPolicy: IfNotPresent
           env:
             - name: ROLE
@@ -144,7 +144,7 @@ metadata:
   name: statefun-worker
   namespace: statefun
 spec:
-  replicas: 1 
+  replicas: 1
   selector:
     matchLabels:
       app: statefun
@@ -157,13 +157,13 @@ spec:
     spec:
       containers:
         - name: worker
-          image: apache/flink-statefun:3.1.0
+          image: apache/flink-statefun:3.2.0
           imagePullPolicy: IfNotPresent
           env:
             - name: ROLE
               value: worker
             - name: MASTER_HOST
-              value: statefun-master 
+              value: statefun-master
           resources:
             requests:
               memory: "1Gi"
@@ -199,4 +199,3 @@ spec:
             items:
               - key: module.yaml
                 path: module.yaml
-

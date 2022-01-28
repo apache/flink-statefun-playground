@@ -7,6 +7,6 @@
     "start": "node functions.js"
   },
   "dependencies": {
-    "apache-flink-statefun": "3.2-SNAPSHOT"
+    "apache-flink-statefun": "3.2.0"
   }
 }
