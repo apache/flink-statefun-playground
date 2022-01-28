@@ -38,9 +38,9 @@ for invoking your StateFun functions.
 
 ### Configure StateFun Module Specification
 
-The AWS Lambda endpoint URL should be configured as a function endpoint in your [Module Specification](https://ci.apache.org/projects/flink/flink-statefun-docs-release-3.0/docs/deployment/module/).
+The AWS Lambda endpoint URL should be configured as a function endpoint in your [Module Specification](https://ci.apache.org/projects/flink/flink-statefun-docs-release-3.1/docs/deployment/module/).
 
-Note how you may use [templating](https://ci.apache.org/projects/flink/flink-statefun-docs-release-3.0/docs/deployment/module/#url-template)
+Note how you may use [templating](https://ci.apache.org/projects/flink/flink-statefun-docs-release-3.1/docs/deployment/module/#url-template)
 in the endpoint URL for multiple functions under the same namespace This allows you to add new AWS Lambda functions,
 potentially individually serving different StateFun functions, under separate paths of the same AWS API Gateway endpoint.
 This provides flexibility to upgrade your StateFun application by dynamically adding new functions without having to restart the StateFun runtime.

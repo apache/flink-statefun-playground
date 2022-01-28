@@ -18,4 +18,7 @@ module statefun.io/greeter
 
 go 1.16
 
-require github.com/apache/flink-statefun/statefun-sdk-go/v3 v3.1.0
+require (
+	github.com/apache/flink-statefun/statefun-sdk-go/v3 v3.1.1
+	google.golang.org/protobuf v1.27.1 // indirect
+)
