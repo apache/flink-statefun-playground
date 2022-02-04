@@ -34,36 +34,15 @@ services:
   #    StateFun runtime
   ###############################################################
 
-  statefun-manager:
-    image: apache/flink-statefun:3.2.0-java11
-    expose:
-      - "6123"
+  statefun:
+    image: apache/flink-statefun-playground:3.2.0
     ports:
       - "8081:8081"
-    environment:
-      ROLE: master
-      MASTER_HOST: statefun-manager
-    volumes:
-      - ./module.yaml:/opt/statefun/modules/connected-components/module.yaml
-
-  statefun-worker:
-    image: apache/flink-statefun:3.2.0-java11
-    expose:
-      - "6121"
-      - "6122"
     depends_on:
-      - statefun-manager
       - kafka
       - connected-components-functions
-    links:
-      - "statefun-manager:statefun-manager"
-      - "kafka:kafka"
-      - "connected-components-functions:connected-components-functions"
-    environment:
-      ROLE: worker
-      MASTER_HOST: statefun-manager
     volumes:
-      - ./module.yaml:/opt/statefun/modules/connected-components/module.yaml
+      - ./module.yaml:/module.yaml
 
   ###############################################################
   #    Kafka for ingress and egress
@@ -82,8 +61,6 @@ services:
       - "9092:9092"
     depends_on:
       - zookeeper
-    links:
-      - "zookeeper:zookeeper"
     environment:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
@@ -98,9 +75,7 @@ services:
     image: ververica/statefun-playground-producer:latest
     depends_on:
       - kafka
-      - statefun-worker
-    links:
-      - "kafka:kafka"
+      - statefun
     environment:
       APP_PATH: /mnt/vertices.txt
       APP_KAFKA_HOST: kafka:9092
