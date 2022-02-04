@@ -23,28 +23,14 @@ services:
   #    StateFun runtime
   ###############################################################
 
-  statefun-manager:
-    image: apache/flink-statefun:3.2.0
-    expose:
-      - "6123"
+  statefun:
+    image: apache/flink-statefun-playground:3.2.0
     ports:
       - "8081:8081"
-    environment:
-      ROLE: master
-      MASTER_HOST: statefun-manager
+    depends_on:
+      - kafka
     volumes:
-      - ./module.yaml:/opt/statefun/modules/greeter/module.yaml
-
-  statefun-worker:
-    image: apache/flink-statefun:3.2.0
-    expose:
-      - "6121"
-      - "6122"
-    environment:
-      ROLE: worker
-      MASTER_HOST: statefun-manager
-    volumes:
-      - ./module.yaml:/opt/statefun/modules/greeter/module.yaml
+      - ./module.yaml:/module.yaml
 
   ###############################################################
   #    Kafka for ingress and egress
