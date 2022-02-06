@@ -23,4 +23,6 @@ RUN mvn -f /usr/src/app/pom.xml clean package
 FROM openjdk:11
 WORKDIR /
 COPY --from=builder /usr/src/app/target/statefun-playground-entrypoint*.jar statefun-playground-entrypoint.jar
-ENTRYPOINT ["java", "-jar", "statefun-playground-entrypoint.jar"]
+COPY docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]

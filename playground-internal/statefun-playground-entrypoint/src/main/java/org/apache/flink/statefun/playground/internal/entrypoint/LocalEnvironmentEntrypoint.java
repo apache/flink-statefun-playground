@@ -21,7 +21,9 @@ import java.util.Collection;
 import org.apache.flink.api.java.utils.MultipleParameterTool;
 import org.apache.flink.configuration.CheckpointingOptions;
 import org.apache.flink.configuration.Configuration;
+import org.apache.flink.configuration.MemorySize;
 import org.apache.flink.configuration.StateBackendOptions;
+import org.apache.flink.configuration.TaskManagerOptions;
 import org.apache.flink.statefun.flink.core.StatefulFunctionsConfig;
 import org.apache.flink.statefun.flink.core.StatefulFunctionsJob;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -95,6 +97,11 @@ public final class LocalEnvironmentEntrypoint {
     final Configuration flinkConfiguration = new Configuration();
     flinkConfiguration.set(StateBackendOptions.STATE_BACKEND, "rocksdb");
     flinkConfiguration.set(CheckpointingOptions.INCREMENTAL_CHECKPOINTS, true);
+
+    // reduce Flink's memory footprint a bit
+    flinkConfiguration.set(TaskManagerOptions.MANAGED_MEMORY_SIZE, MemorySize.ofMebiBytes(64));
+    flinkConfiguration.set(TaskManagerOptions.NETWORK_MEMORY_MIN, MemorySize.ofMebiBytes(16));
+    flinkConfiguration.set(TaskManagerOptions.NETWORK_MEMORY_MAX, MemorySize.ofMebiBytes(16));
 
     return flinkConfiguration;
   }
