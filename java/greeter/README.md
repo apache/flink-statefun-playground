@@ -54,10 +54,7 @@ $ docker-compose up
 You can take a look at what messages are being sent to the Kafka egress:
 
 ```
-$ docker-compose exec kafka kafka-console-consumer \
-      --bootstrap-server kafka:9092 \
-      --topic greetings \
-      --from-beginning
+$ docker-compose exec kafka rpk topic consume greetings
 ```
 
 You can also try modifying the function code in the `src/main/java` directory, and do a zero-downtime upgrade of the

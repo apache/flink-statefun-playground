@@ -63,7 +63,7 @@ Note: `Caller: Optional.empty` in the logs corresponds to the messages that came
 
 To see the results produced to the egress:
 ```
-docker-compose exec kafka bash -c '/usr/bin/kafka-console-consumer --topic receipts --bootstrap-server kafka:9092'
+docker-compose exec kafka rpk topic consume receipts'
 ```
 
 If you want to modify the code, you can do a hot redeploy of your functions service:

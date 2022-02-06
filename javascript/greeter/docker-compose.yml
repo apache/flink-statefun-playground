@@ -47,24 +47,24 @@ services:
   #    Kafka for ingress and egress
   ###############################################################
 
-  zookeeper:
-    image: confluentinc/cp-zookeeper:5.4.3
-    environment:
-      ZOOKEEPER_CLIENT_PORT: "2181"
-    ports:
-      - "2181:2181"
-
   kafka:
-    image: confluentinc/cp-kafka:5.4.3
+    image: docker.vectorized.io/vectorized/redpanda:v21.8.1
+    command:
+      - redpanda start
+      - --smp 1
+      - --memory 512M
+      - --overprovisioned
+      - --set redpanda.default_topic_replications=1
+      - --set redpanda.auto_create_topics_enabled=true
+      - --kafka-addr INSIDE://0.0.0.0:9094,OUTSIDE://0.0.0.0:9092
+      - --advertise-kafka-addr INSIDE://kafka:9094,OUTSIDE://kafka:9092
+      - --pandaproxy-addr 0.0.0.0:8089
+      - --advertise-pandaproxy-addr kafka:8089
+    hostname: kafka
     ports:
+      - "8089:8089"
       - "9092:9092"
-    depends_on:
-      - zookeeper
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      - "9094:9094"
 
   ###############################################################
   #    Simple Kafka JSON producer to simulate ingress events
