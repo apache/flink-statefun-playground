@@ -45,7 +45,7 @@ docker-compose restart producer
 ``` 
 
 Feeling curious? add the following log to the `person` function at [functions.js](functions.js):
-```console.log(`Hello there ${context.self.id}!");```.
+```console.log(`Hello there ${context.self.id}!`);```.
 
 Then, rebuild and restart only the `functions` service.
 
