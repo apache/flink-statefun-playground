@@ -74,7 +74,8 @@ public final class LocalEnvironmentEntrypoint {
 
         if (splits.length != 2) {
           throw new IllegalArgumentException(
-              String.format("The '--%s' value must have the form 'key=value'", CONFIGURATION_OPTION));
+              String.format(
+                  "The '--%s' value must have the form 'key=value'", CONFIGURATION_OPTION));
         }
 
         final String key = splits[0];

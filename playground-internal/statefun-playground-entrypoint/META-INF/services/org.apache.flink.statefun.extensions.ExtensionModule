@@ -1,0 +1,10 @@
+org.apache.flink.statefun.playground.internal.io.binders.egress.v1.Module
+org.apache.flink.statefun.playground.internal.io.binders.ingress.v1.Module
+org.apache.flink.statefun.flink.core.httpfn.TransportClientsModule
+org.apache.flink.statefun.flink.core.httpfn.binders.v1.Module
+org.apache.flink.statefun.flink.core.httpfn.binders.v2.Module
+org.apache.flink.statefun.flink.core.nettyclient.NettyTransportModule
+org.apache.flink.statefun.flink.io.kafka.binders.egress.v1.Module
+org.apache.flink.statefun.flink.io.kafka.binders.ingress.v1.Module
+org.apache.flink.statefun.flink.io.kinesis.binders.egress.v1.Module
+org.apache.flink.statefun.flink.io.kinesis.binders.ingress.v1.Module
