@@ -15,7 +15,7 @@ public final class Types {
 
   public static final Type<UserLogin> USER_LOGIN_JSON_TYPE =
       SimpleType.simpleImmutableTypeFrom(
-          TypeName.typeNameOf(TYPES_NAMESPACE, UserLogin.class.getName()),
+          TypeName.typeNameOf(TYPES_NAMESPACE, "UserLogin"),
           JSON_OBJ_MAPPER::writeValueAsBytes,
           bytes -> JSON_OBJ_MAPPER.readValue(bytes, UserLogin.class));
 
@@ -24,4 +24,10 @@ public final class Types {
           TypeName.typeNameOf(TYPES_NAMESPACE, UserProfile.getDescriptor().getFullName()),
           UserProfile::toByteArray,
           UserProfile::parseFrom);
+
+  public static final Type<EgressRecord> EGRESS_RECORD_JSON_TYPE =
+      SimpleType.simpleImmutableTypeFrom(
+          TypeName.typeNameOf("io.statefun.playground", "EgressRecord"),
+          JSON_OBJ_MAPPER::writeValueAsBytes,
+          bytes -> JSON_OBJ_MAPPER.readValue(bytes, EgressRecord.class));
 }

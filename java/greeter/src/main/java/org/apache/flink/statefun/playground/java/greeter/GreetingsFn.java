@@ -18,15 +18,17 @@
 
 package org.apache.flink.statefun.playground.java.greeter;
 
+import static org.apache.flink.statefun.playground.java.greeter.types.Types.EGRESS_RECORD_JSON_TYPE;
 import static org.apache.flink.statefun.playground.java.greeter.types.Types.USER_PROFILE_PROTOBUF_TYPE;
 
 import java.util.concurrent.CompletableFuture;
+import org.apache.flink.statefun.playground.java.greeter.types.EgressRecord;
 import org.apache.flink.statefun.playground.java.greeter.types.generated.UserProfile;
 import org.apache.flink.statefun.sdk.java.Context;
 import org.apache.flink.statefun.sdk.java.StatefulFunction;
 import org.apache.flink.statefun.sdk.java.StatefulFunctionSpec;
 import org.apache.flink.statefun.sdk.java.TypeName;
-import org.apache.flink.statefun.sdk.java.io.KafkaEgressMessage;
+import org.apache.flink.statefun.sdk.java.message.EgressMessageBuilder;
 import org.apache.flink.statefun.sdk.java.message.Message;
 
 /**
@@ -34,7 +36,6 @@ import org.apache.flink.statefun.sdk.java.message.Message;
  * UserProfile}. Then, it sends the greetings message back to the user via an egress Kafka topic.
  */
 final class GreetingsFn implements StatefulFunction {
-
   private static final String[] GREETINGS_TEMPLATES =
       new String[] {"Welcome %s!", "Nice to see you again %s.", "Third time is a charm %s!"};
 
@@ -42,20 +43,19 @@ final class GreetingsFn implements StatefulFunction {
   static final StatefulFunctionSpec SPEC =
       StatefulFunctionSpec.builder(TYPENAME).withSupplier(GreetingsFn::new).build();
 
-  private static final TypeName KAFKA_EGRESS = TypeName.typeNameOf("greeter.io", "user-greetings");
+  private static final TypeName PLAYGROUND_EGRESS =
+      TypeName.typeNameOf("io.statefun.playground", "egress");
 
   @Override
   public CompletableFuture<Void> apply(Context context, Message message) {
     if (message.is(USER_PROFILE_PROTOBUF_TYPE)) {
       final UserProfile profile = message.as(USER_PROFILE_PROTOBUF_TYPE);
       final String greetings = createGreetingsMessage(profile);
+      final EgressRecord egressRecord = new EgressRecord("greetings", greetings);
 
-      final String userId = context.self().id();
       context.send(
-          KafkaEgressMessage.forEgress(KAFKA_EGRESS)
-              .withTopic("greetings")
-              .withUtf8Key(userId)
-              .withUtf8Value(greetings)
+          EgressMessageBuilder.forEgress(PLAYGROUND_EGRESS)
+              .withCustomType(EGRESS_RECORD_JSON_TYPE, egressRecord)
               .build());
     }
     return context.done();

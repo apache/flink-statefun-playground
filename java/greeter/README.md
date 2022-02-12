@@ -9,8 +9,6 @@ This example works with Docker Compose, and runs a few services that build up an
 - Functions service that runs your functions and expose them through an HTTP endpoint.
 - StateFun runtime processes (a manager plus workers) that will handle ingress, egress, and inter-function messages as
   well as function state storage in a consistent and fault-tolerant manner.
-- Apache Kafka broker for the application ingress and egress. StateFun currently natively supports AWS Kinesis as well,
-  and you can also extend to connect with other systems.
 
 To motivate this example, we'll implement a simple user greeter application, which has two functions - a `UserFn` that
 expects `UserLogin` JSON events from an ingress and keeps in state storage information about users, and a `GreetingsFn`
@@ -21,7 +19,6 @@ that accepts user information to generate personalized greeting messages that ar
 - `src/`, `pom.xml` and `Dockerfile`: These files and directories are the contents of a Java Maven project which builds
   our functions service, hosting the `UserFn` and `UserLogin` behind a HTTP endpoint. Check out the source code under
   `src/main/java`. The `Dockerfile` is used to build a Docker image for our functions service.
-- `user-logins.txt`: A file with multiple JSON objects per line; this is used as test events produced to our application ingress.
 - `module.yaml`: The [Module Specification](https://ci.apache.org/projects/flink/flink-statefun-docs-release-3.2/docs/deployment/module/) file to be mounted to the StateFun runtime process containers. This
   configures a few things for a StateFun application, such as the service endpoints of the application's functions, as
   well as definitions of [Ingresses and Egresses](https://ci.apache.org/projects/flink/flink-statefun-docs-release-3.2/docs/io-module/overview/) which the application will use.
@@ -40,7 +37,7 @@ First, lets build the example. From this directory, execute:
 $ docker-compose build
 ```
 
-This pulls all the necessary Docker images (StateFun and Kafka), and also builds the functions service image. This can
+This pulls all the necessary Statefun Docker image, and also builds the functions service image. This can
 take a few minutes as it also needs to build the function's Java project.
 
 Afterward the build completes, start running all the services:
@@ -51,11 +48,29 @@ $ docker-compose up
 
 ## Play around!
 
-You can take a look at what messages are being sent to the Kafka egress:
+The greeter application allows you to do the following actions:
+
+* Create a greeting for a user via sending a `UserLogin` message to the `user` function
+
+In order to send messages to the Stateful Functions application you can run:
 
 ```
-$ docker-compose exec kafka rpk topic consume greetings
+$ curl -X PUT -H "Content-Type: application/vnd.greeter.types/UserLogin" -d '{"user_id": "1", "user_name": "Joe", "login_type": "WEB"}' localhost:8090/greeter.fns/user/1
 ```
+
+You can take a look at what messages are being sent to the Playground egress:
+
+```
+$ curl -X GET localhost:8091/greetings
+```
+
+### Messages
+
+The messages are expected to be encoded as JSON.
+
+* `UserLogin`: `{"user_id": "1", "user_name": "Joe", "login_type": "WEB"}`, `user_id` is the id of the `user` function
+
+## What's next?
 
 You can also try modifying the function code in the `src/main/java` directory, and do a zero-downtime upgrade of the
 functions. Some ideas you can try out:
