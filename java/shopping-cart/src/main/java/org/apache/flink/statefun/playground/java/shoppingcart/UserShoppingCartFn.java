@@ -33,8 +33,8 @@ import org.apache.flink.statefun.sdk.java.Context;
 import org.apache.flink.statefun.sdk.java.StatefulFunction;
 import org.apache.flink.statefun.sdk.java.TypeName;
 import org.apache.flink.statefun.sdk.java.ValueSpec;
-import org.apache.flink.statefun.sdk.java.io.KafkaEgressMessage;
 import org.apache.flink.statefun.sdk.java.message.EgressMessage;
+import org.apache.flink.statefun.sdk.java.message.EgressMessageBuilder;
 import org.apache.flink.statefun.sdk.java.message.Message;
 import org.apache.flink.statefun.sdk.java.message.MessageBuilder;
 import org.apache.flink.statefun.sdk.java.types.SimpleType;
@@ -146,10 +146,10 @@ final class UserShoppingCartFn implements StatefulFunction {
 
             final Messages.Receipt receipt = new Messages.Receipt(context.self().id(), items);
             final EgressMessage egressMessage =
-                KafkaEgressMessage.forEgress(Identifiers.RECEIPT_EGRESS)
-                    .withTopic(Identifiers.RECEIPT_TOPICS)
-                    .withUtf8Key(context.self().id())
-                    .withValue(Messages.RECEIPT_TYPE, receipt)
+                EgressMessageBuilder.forEgress(Identifiers.RECEIPT_EGRESS)
+                    .withCustomType(
+                        Messages.EGRESS_RECORD_JSON_TYPE,
+                        new Messages.EgressRecord(Identifiers.RECEIPT_TOPICS, receipt.toString()))
                     .build();
             context.send(egressMessage);
           });

@@ -217,6 +217,12 @@ public class Messages {
           mapper::writeValueAsBytes,
           bytes -> mapper.readValue(bytes, ItemAvailability.class));
 
+  public static final Type<EgressRecord> EGRESS_RECORD_JSON_TYPE =
+      SimpleType.simpleImmutableTypeFrom(
+          TypeName.typeNameOf("io.statefun.playground", "EgressRecord"),
+          mapper::writeValueAsBytes,
+          bytes -> mapper.readValue(bytes, EgressRecord.class));
+
   public static class RequestItem {
     private final int quantity;
 
@@ -263,6 +269,31 @@ public class Messages {
     @Override
     public String toString() {
       return "ItemAvailability{" + "status=" + status + ", quantity=" + quantity + '}';
+    }
+  }
+
+  public static class EgressRecord {
+    @JsonProperty("topic")
+    private String topic;
+
+    @JsonProperty("payload")
+    private String payload;
+
+    public EgressRecord() {
+      this(null, null);
+    }
+
+    public EgressRecord(String topic, String payload) {
+      this.topic = topic;
+      this.payload = payload;
+    }
+
+    public String getTopic() {
+      return topic;
+    }
+
+    public String getPayload() {
+      return payload;
     }
   }
 }

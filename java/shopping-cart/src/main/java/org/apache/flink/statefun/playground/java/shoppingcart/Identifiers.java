@@ -23,6 +23,7 @@ final class Identifiers {
 
   private Identifiers() {}
 
-  static final TypeName RECEIPT_EGRESS = TypeName.typeNameFromString("com.example/receipts");
+  static final TypeName RECEIPT_EGRESS =
+      TypeName.typeNameFromString("io.statefun.playground/egress");
   static final String RECEIPT_TOPICS = "receipts";
 }
