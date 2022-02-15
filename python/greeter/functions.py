@@ -24,6 +24,7 @@ from aiohttp import web
 functions = StatefulFunctions()
 
 GREET_REQUEST_TYPE = make_json_type(typename="example/GreetRequest")
+EGRESS_RECORD_TYPE = make_json_type(typename="io.statefun.playground/EgressRecord")
 
 @functions.bind(typename="example/person", specs=[ValueSpec(name="visits", type=IntType)])
 async def person(context: Context, message: Message):
@@ -54,10 +55,14 @@ async def greeter(context, message):
 
     greeting = await compute_fancy_greeting(person_name, visits)
 
-    context.send_egress(kafka_egress_message(typename="example/greets",
-                                             topic="greetings",
-                                             key=person_name,
-                                             value=greeting))
+    egress_record = {
+        "topic": "greetings",
+        "payload": greeting
+    }
+
+    context.send_egress(egress_message_builder(target_typename="io.statefun.playground/egress",
+                                             value=egress_record,
+                                             value_type=EGRESS_RECORD_TYPE))
 
 
 async def compute_fancy_greeting(name: str, seen: int):

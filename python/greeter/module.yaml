@@ -20,21 +20,12 @@ spec:
   transport:
     type: io.statefun.transports.v1/async
 ---
-kind: io.statefun.kafka.v1/ingress
+kind: io.statefun.playground.v1/ingress
 spec:
-  id: example/names
-  address: kafka:9092
-  consumerGroupId: my-group-id
-  topics:
-    - topic: names
-      valueType: example/GreetRequest
-      targets:
-        - example/person
+  port: 8090
 ---
-kind: io.statefun.kafka.v1/egress
+kind: io.statefun.playground.v1/egress
 spec:
-  id: example/greets
-  address: kafka:9092
-  deliverySemantic:
-    type: exactly-once
-    transactionTimeout: 15min 
+  port: 8091
+  topics:
+    - greetings
