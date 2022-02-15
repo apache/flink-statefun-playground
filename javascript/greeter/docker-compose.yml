@@ -34,52 +34,12 @@ services:
   ###############################################################
 
   statefun:
-    image: apache/flink-statefun-playground:3.2.0
+    image: apache/flink-statefun-playground:3.2.0-1.0
     ports:
       - "8081:8081"
+      - "8090:8090"
+      - "8091:8091"
     depends_on:
-      - kafka
       - functions
     volumes:
       - ./module.yaml:/module.yaml
-
-  ###############################################################
-  #    Kafka for ingress and egress
-  ###############################################################
-
-  kafka:
-    image: docker.vectorized.io/vectorized/redpanda:v21.8.1
-    command:
-      - redpanda start
-      - --smp 1
-      - --memory 512M
-      - --overprovisioned
-      - --set redpanda.default_topic_replications=1
-      - --set redpanda.auto_create_topics_enabled=true
-      - --kafka-addr INSIDE://0.0.0.0:9094,OUTSIDE://0.0.0.0:9092
-      - --advertise-kafka-addr INSIDE://kafka:9094,OUTSIDE://kafka:9092
-      - --pandaproxy-addr 0.0.0.0:8089
-      - --advertise-pandaproxy-addr kafka:8089
-    hostname: kafka
-    ports:
-      - "8089:8089"
-      - "9092:9092"
-      - "9094:9094"
-
-  ###############################################################
-  #    Simple Kafka JSON producer to simulate ingress events
-  ###############################################################
-
-  producer:
-    image: ververica/statefun-playground-producer:latest
-    depends_on:
-      - kafka
-      - statefun
-    environment:
-      APP_PATH: /mnt/input-example.json
-      APP_KAFKA_HOST: kafka:9092
-      APP_KAFKA_TOPIC: names
-      APP_JSON_PATH: name
-      APP_DELAY_SECONDS: 1
-    volumes:
-      - ./input-example.json:/mnt/input-example.json

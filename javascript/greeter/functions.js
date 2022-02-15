@@ -19,14 +19,14 @@
 
 const http = require("http");
 
-const {StateFun, Message, Context, messageBuilder, kafkaEgressMessage} = require("apache-flink-statefun");
+const {StateFun, Message, Context, messageBuilder, egressMessageBuilder} = require("apache-flink-statefun");
 
 // ------------------------------------------------------------------------------------------------------
 // Greeter
 // ------------------------------------------------------------------------------------------------------
 
 const GreetRequestType = StateFun.jsonType("example/GreetRequest");
-
+const EgressRecordType = StateFun.jsonType("io.statefun.playground/EgressRecord")
 
 /**
  * A Stateful function that represents a person.
@@ -42,7 +42,7 @@ async function person(context, message) {
 	context.storage.visits = visits
 
 	// enrich the request with the number of vists.
-  	let request = message.as(GreetRequestType)                                                                                    
+  	let request = message.as(GreetRequestType)
 	request.visits = visits
 
 	// next, we will forward a message to a special greeter function,
@@ -63,12 +63,16 @@ async function greeter(context, message) {
 	const visits = request.visits;
 
 	const greeting = await compute_fancy_greeting(person_name, visits);
-
-	context.send(kafkaEgressMessage({
-		typename: "example/greets",
+	const egressRecord = {
 		topic: "greetings",
-		key: person_name,
-		value: greeting}));
+		payload: greeting,
+	}
+
+	context.send(egressMessageBuilder({
+			typename: "io.statefun.playground/egress",
+			value: egressRecord,
+			valueType: EgressRecordType,
+	}));
 }
 
 
@@ -115,6 +119,3 @@ statefun.bind({
 // ------------------------------------------------------------------------------------------------------
 
 http.createServer(statefun.handler()).listen(8000);
-
-
-
