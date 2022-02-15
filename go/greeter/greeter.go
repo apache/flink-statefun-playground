@@ -27,11 +27,17 @@ type GreetRequest struct {
 	Visits int32  `json:"visits"`
 }
 
+type EgressRecord struct {
+	Topic string `json:"topic"`
+	Payload string `json:"payload"`
+}
+
 var (
 	PersonTypeName      = statefun.TypeNameFrom("example/person")
 	GreeterTypeName     = statefun.TypeNameFrom("example/greeter")
-	KafkaEgressTypeName = statefun.TypeNameFrom("example/greets")
+	PlaygroundEgressTypeName = statefun.TypeNameFrom("io.statefun.playground/egress")
 	GreetRequestType    = statefun.MakeJsonType(statefun.TypeNameFrom("example/GreetRequest"))
+	EgressRecordType    = statefun.MakeJsonType(statefun.TypeNameFrom("io.statefun.playground/EgressRecord"))
 )
 
 type Person struct {
@@ -78,11 +84,15 @@ func Greeter(ctx statefun.Context, message statefun.Message) error {
 
 	greeting := computeGreeting(request.Name, request.Visits)
 
-	ctx.SendEgress(statefun.KafkaEgressBuilder{
-		Target: KafkaEgressTypeName,
-		Topic:  "greetings",
-		Key:    request.Name,
-		Value:  []byte(greeting),
+	egressRecord := EgressRecord {
+		Topic: "greetings",
+		Payload: greeting,
+	}
+
+	ctx.SendEgress(statefun.GenericEgressBuilder{
+		Target: PlaygroundEgressTypeName,
+		Value:  egressRecord,
+		ValueType: EgressRecordType,
 	})
 
 	return nil
