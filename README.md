@@ -4,12 +4,14 @@ This repository contains tutorials and examples for [Stateful Functions](https:/
 
 ## Tutorials and Examples
 
-The repository contains tutorials and examples for all SDK that Stateful Functions supports:
+The repository contains tutorials and examples for all SDKs that Stateful Functions supports:
 
 - [`Java SDK`](java)
 - [`Go SDK`](go)
 - [`JavaScript SDK`](javascript)
 - [`Python SDK`](python)
+
+Each tutorial or example will have it's own `README` that explains in detail what is being covered and how to build and run the code by yourself.
 
 Moreover, it contains examples for [how to deploy Stateful Functions](deployments) on various platforms.
 
