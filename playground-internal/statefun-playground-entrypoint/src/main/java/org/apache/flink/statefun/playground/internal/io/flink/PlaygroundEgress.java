@@ -1,16 +1,14 @@
 package org.apache.flink.statefun.playground.internal.io.flink;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.protobuf.ByteString;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.statefun.playground.internal.io.Constants;
 import org.apache.flink.statefun.sdk.reqreply.generated.TypedValue;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.protobuf.ByteString;
-
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 class PlaygroundEgress<T> extends RichSinkFunction<T> {
   private static final ObjectMapper objectMapper = new ObjectMapper();
