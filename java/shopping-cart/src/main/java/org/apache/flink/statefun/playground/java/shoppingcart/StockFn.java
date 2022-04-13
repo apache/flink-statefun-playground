@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 
 final class StockFn implements StatefulFunction {
 
-  private static final Logger LOG = LoggerFactory.getLogger(UserShoppingCartFn.class);
+  private static final Logger LOG = LoggerFactory.getLogger(StockFn.class);
 
   static final TypeName TYPE = TypeName.typeNameFromString("com.example/stock");
   static final ValueSpec<Integer> STOCK = ValueSpec.named("stock").withIntType();
