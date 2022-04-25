@@ -77,7 +77,6 @@ public class Expose {
     private void onRequestBody(HttpServerExchange exchange, byte[] requestBytes) {
       try {
         CompletableFuture<Slice> future = handler.handle(Slices.wrap(requestBytes));
-        exchange.dispatch();
         future.whenComplete(
             (responseBytes, ex) -> {
               if (ex != null) {
