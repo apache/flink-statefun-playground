@@ -26,6 +26,7 @@ import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+
 import org.apache.flink.statefun.sdk.java.StatefulFunctionSpec;
 import org.apache.flink.statefun.sdk.java.StatefulFunctions;
 import org.apache.flink.statefun.sdk.java.handler.RequestReplyHandler;
@@ -47,8 +48,17 @@ public class Expose {
             .withSupplier(UserShoppingCartFn::new)
             .build();
 
+    StatefulFunctionSpec wordCountFn =
+          StatefulFunctionSpec.builder(WordCountFn.TYPE)
+                  .withValueSpec(WordCountFn.WORD_FREQUENCY)
+                  .withSupplier(WordCountFn::new)
+                  .build();
+
     StatefulFunctions functions = new StatefulFunctions();
-    functions.withStatefulFunction(stockFn).withStatefulFunction(userShoppingCartFn);
+    functions
+            .withStatefulFunction(stockFn)
+            .withStatefulFunction(userShoppingCartFn)
+            .withStatefulFunction(wordCountFn);
     RequestReplyHandler handler = functions.requestReplyHandler();
 
     /* This example uses the Undertow http server, but any HTTP server/framework will work as-well */
