@@ -48,7 +48,7 @@ under the License.
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
-            <version>3.11.4</version>
+            <version>3.21.6</version>
         </dependency>
 
         <!-- Undertow web server -->
