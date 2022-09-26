@@ -1,0 +1,37 @@
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+kind: io.statefun.endpoints.v2/http
+spec:
+  functions: statefun.testbed.fns/*
+  urlPathTemplate: http://host.testcontainers.internal:1108/
+  transport:
+    type: io.statefun.transports.v1/async
+    call: 1day # setting a very high timeout here facilitates the user
+               # to set breakpoints in the function Java code and explore
+               # around in the IDE, without StateFun failing an ongoing invocation
+---
+kind: io.statefun.kafka.v1/ingress
+spec:
+  id: statefun.testbed.io/word-frequency
+  address: kafka:9092
+  consumerGroupId: statefun.testbed.wordcount
+  startupPosition:
+    type: earliest
+  topics:
+    - topic: word-frequency
+      valueType: statefun.testbed.types/AddNewText
+      targets:
+        - statefun.testbed.fns/word-count
