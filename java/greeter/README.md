@@ -19,9 +19,9 @@ that accepts user information to generate personalized greeting messages that ar
 - `src/`, `pom.xml` and `Dockerfile`: These files and directories are the contents of a Java Maven project which builds
   our functions service, hosting the `UserFn` and `UserLogin` behind a HTTP endpoint. Check out the source code under
   `src/main/java`. The `Dockerfile` is used to build a Docker image for our functions service.
-- `module.yaml`: The [Module Specification](https://ci.apache.org/projects/flink/flink-statefun-docs-release-3.2/docs/deployment/module/) file to be mounted to the StateFun runtime process containers. This
+- `module.yaml`: The [Module Specification](https://nightlies.apache.org/flink/flink-statefun-docs-release-3.2/docs/modules/overview/) file to be mounted to the StateFun runtime process containers. This
   configures a few things for a StateFun application, such as the service endpoints of the application's functions, as
-  well as definitions of [Ingresses and Egresses](https://ci.apache.org/projects/flink/flink-statefun-docs-release-3.2/docs/io-module/overview/) which the application will use.
+  well as definitions of [Ingresses and Egresses](https://nightlies.apache.org/flink/flink-statefun-docs-release-3.2/docs/modules/io/overview/) which the application will use.
 - `docker-compose.yml`: Docker Compose file to spin up everything.
 
 ## Prerequisites
