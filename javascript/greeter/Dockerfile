@@ -19,7 +19,7 @@ FROM node:16
 WORKDIR /usr/src/app
 
 COPY package.json ./
-RUN npm install apache-flink-statefun@3.2.0
+RUN npm install apache-flink-statefun@3.3.0
 
 COPY functions.js ./
 
