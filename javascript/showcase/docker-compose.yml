@@ -24,7 +24,7 @@ services:
   ###############################################################
 
   statefun:
-    image: apache/flink-statefun-playground:3.3.0
+    image: apache/flink-statefun-playground:3.2.0-1.0
     ports:
       - "8081:8081"
     depends_on:
